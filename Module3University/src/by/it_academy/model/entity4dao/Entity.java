@@ -1,13 +1,13 @@
-package by.it_academy.model;
+package by.it_academy.model.entity4dao;
 
 /**
  * use for parametrized DAO classes
  * @author head4max
  *
  */
-class Entity {
+public class Entity {
 	
-	protected int id = 0;
+	protected int id;
 	
 	protected Entity(){
 	}

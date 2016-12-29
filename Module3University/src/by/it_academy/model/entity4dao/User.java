@@ -1,8 +1,13 @@
-package by.it_academy.model;
+package by.it_academy.model.entity4dao;
 
 import java.util.Date;
 
-class User extends Entity {
+/**
+ * class-expert with information about user by {@link User#id}
+ * @author head4max
+ *
+ */
+public class User extends Entity {
 	
 	private static enum Access{ADMIN,STUDENT,COMISION};
 	private String name;
@@ -16,6 +21,12 @@ class User extends Entity {
 	
 	private Access eccessType;
 	
+	
+	/**
+	 * inner class for store telephone number
+	 * @author head4max
+	 *
+	 */
 	private class Mobile {
 		private int prefix;
 		private int operatorCode;
@@ -41,6 +52,12 @@ class User extends Entity {
 		}
 	}
 	
+	
+	/**
+	 * inner class contain detailed info about address
+	 * @author head4max
+	 *
+	 */
 	private class Adress {
 		
 		private String country;
@@ -97,8 +114,8 @@ class User extends Entity {
 	 * @param mobile
 	 * @param eccessType
 	 */
-	public User(String name, String lastName, Adress adress, Mobile mobile, Access eccessType) {
-		
+	public User(int id, String name, String lastName, Adress adress, Mobile mobile, Access eccessType) {
+		super(id);
 		this.name = name;
 		this.lastName = lastName;
 		this.adress = adress;
@@ -127,5 +144,7 @@ class User extends Entity {
 		return eccessType;
 	}
 	
-	
+	public Date getDate() {
+		return this.birthDay;
+	}
 }

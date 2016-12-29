@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.it_academy.controller;
 
 import java.io.IOException;
