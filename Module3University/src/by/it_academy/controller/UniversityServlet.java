@@ -1,13 +1,18 @@
 package by.it_academy.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import by.it_academy.model.dao_impl.UserDAOImpl;
+import by.it_academy.model.entity4dao.init_list.UserListInit;
 
 /**
  * @author head4max
@@ -21,6 +26,17 @@ public class UniversityServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -6458809598480399931L;
 
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		
+		try {
+			new UserDAOImpl().create(new UserListInit().getList());
+		} catch (SQLException e) {
+			System.out.println("fail to create");
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		

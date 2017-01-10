@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.it_academy.model.dao_impl;
 
 import java.util.List;
@@ -12,14 +9,15 @@ import by.it_academy.model.entity4dao.Certificate;
  * @author head4max
  *
  */
-public class CertificateDAOImpl implements CertificateDAO {
+public class CertificateDAOImpl extends DAOImplConnection implements CertificateDAO {
 
 	/* (non-Javadoc)
 	 * @see by.it_academy.model.dao.AbstractDAO#create(java.util.List)
 	 */
 	@Override
 	public void create(List<Certificate> entity) {
-		// TODO Auto-generated method stub
+		
+		
 
 	}
 

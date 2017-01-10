@@ -29,7 +29,7 @@ public class AuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain fc)
 			throws IOException, ServletException {
 		
-		HttpServletRequest req = (HttpServletRequest) request;
+/*		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
 		response.setContentType("text/html");
@@ -44,7 +44,9 @@ public class AuthenticationFilter implements Filter {
 		}else{
 			// pass the request along the filter chain
 			fc.doFilter(request, response);
-		}
+		}*/
+		
+		fc.doFilter(request, response);
 	}
 
 	@Override

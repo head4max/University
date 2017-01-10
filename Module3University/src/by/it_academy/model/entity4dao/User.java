@@ -24,7 +24,7 @@ public class User extends Entity {
 	 * @param mobile
 	 * @param eccessType
 	 */
-	public User(int id, String name, String lastName, String address, String mobile) {
+	public User(int id, String name, String lastName, Date birthDay, String address, String mobile) {
 		super(id);
 		this.name = name;
 		this.lastName = lastName;
@@ -51,6 +51,20 @@ public class User extends Entity {
 	 */
 	public Date getDate() {
 		return this.birthDay;
+	}
+	
+	/**
+	 * @return the mobile
+	 */
+	public String getMobile() {
+		return mobile;
+	}
+
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
 	}
 
 	/* (non-Javadoc)

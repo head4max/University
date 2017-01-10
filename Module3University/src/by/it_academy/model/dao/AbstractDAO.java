@@ -1,15 +1,8 @@
 package by.it_academy.model.dao;
 
-import java.util.List;
-
+import by.it_academy.model.dao.db_operations.*;
 import by.it_academy.model.entity4dao.Entity;
 
-interface AbstractDAO<T extends Entity> {
-	
-	void create(List<T> entity);
-	boolean add(T entity);
-	boolean delete(int id);
-	T getById(int id);
-	List<T> getAll();
+interface AbstractDAO<T extends Entity> extends CreateTable<T>, AddEntity<T>, DeleteEntityByID<T>, GetEntityByID<T>, GetAllEntity<T> {
 		
 }
