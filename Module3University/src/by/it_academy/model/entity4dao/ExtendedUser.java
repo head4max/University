@@ -20,6 +20,7 @@ public class ExtendedUser extends User {
 	private ExtendedUser(String name, String lastName, Date birthDay, String address, String mobile, String login,
 			String password, int accessType) {
 		super(login.hashCode(), name, lastName, birthDay, address, mobile);
+		System.out.println(birthDay);
 		this.login = login;
 		this.password = password;
 		this.accessType = accessType;
@@ -27,7 +28,10 @@ public class ExtendedUser extends User {
 	
 	public static ExtendedUser getInstance(String name, String lastName, Date birthDay, String address, String mobile, String login,
 			String password, int accessType){
-		if(name.matches("[A-ZА-ЯЁ][a-zа-яё]*") && lastName.matches("[A-ZА-ЯЁ][a-zа-яё]*") && mobile.matches("[0-9]{7}") && login.matches("[A-ZА-ЯЁa-zа-яё]*[@][a-z]*[.][a-z]{2,3}") &&
+
+		
+		System.out.println(birthDay);
+		if(name.matches("[A-ZА-ЯЁa-zа-яё]*") && lastName.matches("[A-ZА-ЯЁa-zа-яё]*") && mobile.matches("[0-9]{7}") && login.matches("[A-Za-z0-9]*[@][a-z]*[.][a-z]{2,3}") &&
 				accessType > 0){
 			return new ExtendedUser(name, lastName, birthDay, address, mobile, login, password, accessType);
 		}else{
@@ -36,10 +40,11 @@ public class ExtendedUser extends User {
 	}
 	
 	public static ExtendedUser getInstanceFromString(String bundle){
-		String[] strUser= bundle.split("|");
+		String[] strUser= bundle.split(" ");
+		System.out.println("user " + strUser.length);
 		
 		if(strUser.length == 8){
-			return ExtendedUser.getInstance(strUser[0], strUser[1], new Date(Long.parseLong(strUser[2])), strUser[3], strUser[4], strUser[5], strUser[6], Integer.parseInt(strUser[7]));
+			return ExtendedUser.getInstance(strUser[0], strUser[1], new java.util.Date(Long.parseLong(strUser[2])), strUser[3], strUser[4], strUser[5], strUser[6], Integer.parseInt(strUser[7]));
 		}else {
 			return null;
 		}
@@ -70,4 +75,16 @@ public class ExtendedUser extends User {
 	public int getID(){
 		return this.id;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ExtendedUser [" + "id=" + id + ", " + (login != null ? "login=" + login + ", " : "")
+				+ (password != null ? "password=" + password + ", " : "") + "accessType=" + accessType + ", "
+				+ (super.toString() != null ? "toString()=" + super.toString() : "") + "]";
+	}
+	
+	
 }

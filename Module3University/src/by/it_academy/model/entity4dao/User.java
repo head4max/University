@@ -28,6 +28,7 @@ public class User extends Entity {
 		super(id);
 		this.name = name;
 		this.lastName = lastName;
+		this.birthDay = birthDay;
 		this.address = address;
 		this.mobile = mobile;
 	}

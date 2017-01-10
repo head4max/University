@@ -16,14 +16,14 @@ import by.it_academy.model.entity4dao.User;
  */
 public class UserDAOImpl extends DAOImplConnection implements UserDAO {
 	
-	private static String addAllPreparedStatement;
+//	private static String addAllPreparedStatement;
 
 	static{
 		ResourceBundle rbUserDAOImpl = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_prepared_statement");
 		
 		createPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("create"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_table_create"));
 		addPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("add"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_add_values"));
-		addAllPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("add"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_add_init"));
+//		addAllPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("add"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_add_init"));
 		deletePreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("delete"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_delete_where"));
 		updatePreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("update"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_update_set"), rbUserDAOImpl.getString("users_update_where"));
 		getByIDPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("getByID"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_getbyid_where"));
@@ -70,6 +70,34 @@ public class UserDAOImpl extends DAOImplConnection implements UserDAO {
 	@Override
 	public boolean add(User entity) {
 		
+		PreparedStatement psCreate;
+		ResourceBundle rbSalt = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_security");
+		
+		ExtendedUser eu = (ExtendedUser) entity;
+		System.out.println(eu);
+		System.out.println(eu.getDate().getTime());
+		java.sql.Date date = new java.sql.Date(eu.getDate().getTime());
+		
+		try {
+			psCreate = this.connectionImpl.prepareStatement(addPreparedStatement);
+		
+			psCreate.setInt(1,eu.getID());
+			psCreate.setString(2,eu.getName());
+			psCreate.setString(3,eu.getLastName());
+			psCreate.setDate(4,date);
+			psCreate.setInt(5,Integer.parseInt(eu.getMobile()));
+			psCreate.setString(6,eu.getAddress());
+			psCreate.setString(7,eu.getLogin());
+			psCreate.setString(8,eu.getPassword());
+			psCreate.setString(9,rbSalt.getString("pswrd_key"));
+			psCreate.setInt(10,eu.getAccessType());
+			
+			psCreate.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("quary error");
+			e.printStackTrace();
+		}
 		
 		return false;
 	}

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import by.it_academy.model.dao_impl.UserDAOImpl;
+import by.it_academy.model.entity4dao.User;
 import by.it_academy.model.entity4dao.init_list.UserListInit;
 
 /**
@@ -29,19 +30,27 @@ public class UniversityServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		
-		try {
+		UserDAOImpl udaoi = new UserDAOImpl();
+		
+		for(User u:new UserListInit().getList()){
+			udaoi.add(u);
+			System.out.println(u);
+		}
+		
+/*		try {
+			
 			new UserDAOImpl().create(new UserListInit().getList());
 		} catch (SQLException e) {
 			System.out.println("fail to create");
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		
-		String login = request.getSession().getAttribute("login").toString();
-		String password = request.getSession().getAttribute("login").toString();
+//		String login = request.getSession().getAttribute("login").toString();
+//		String password = request.getSession().getAttribute("login").toString();
 		
 		
 		
