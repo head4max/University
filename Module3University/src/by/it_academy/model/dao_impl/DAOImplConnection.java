@@ -37,7 +37,7 @@ class DAOImplConnection {
 			e.printStackTrace();
 		}*/
 		
-		connectionImpl = TemporaryConnection.getConnection();
+//		connectionImpl = TemporaryConnection.getConnection();
 	}
 
 	/* (non-Javadoc)

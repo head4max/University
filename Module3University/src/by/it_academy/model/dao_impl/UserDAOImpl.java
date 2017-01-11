@@ -1,23 +1,38 @@
 package by.it_academy.model.dao_impl;
 
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import by.it_academy.model.dao.UserDAO;
 import by.it_academy.model.entity4dao.ExtendedUser;
 import by.it_academy.model.entity4dao.User;
+import by.it_academy.model.services.c3p0.SQLConnectionsPull;
 
 /**
  * @author head4max
  *
  */
-public class UserDAOImpl extends DAOImplConnection implements UserDAO {
+public class UserDAOImpl implements UserDAO {
 	
+//	static field represent prepared statement for UserDAO methods
 //	private static String addAllPreparedStatement;
-
+	protected static String addPreparedStatement;
+	protected static String createPreparedStatement;
+	protected static String deletePreparedStatement;
+	protected static String updatePreparedStatement;
+	protected static String getByIDPreparedStatement;
+	protected static String getAllPreparedStatement;
+	protected static String getUserByLoginPasswordPreparedStatement;
+	
 	static{
 		ResourceBundle rbUserDAOImpl = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_prepared_statement");
 		
@@ -26,46 +41,40 @@ public class UserDAOImpl extends DAOImplConnection implements UserDAO {
 //		addAllPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("add"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_add_init"));
 		deletePreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("delete"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_delete_where"));
 		updatePreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("update"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_update_set"), rbUserDAOImpl.getString("users_update_where"));
-		getByIDPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("getByID"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_getbyid_where"));
-		getAllPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("users_getall_select"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_getall_where"));
+		getByIDPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("getByID"), rbUserDAOImpl.getString("users_getbyid"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_getbyid_where"));
+		getAllPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("getAll"), rbUserDAOImpl.getString("users_getall_select"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_getall_where"));
+		getUserByLoginPasswordPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("getByID"), rbUserDAOImpl.getString("users_getbyloginpassword"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_getbyloginpassword_where"));
 	}
-	/* (non-Javadoc)
-	 * @see by.it_academy.model.dao.AbstractDAO#create(java.util.List)
+	
+	/**
+	 * public void create(@{@link List}<{@link User}>)
+	 * create table "users" and add USER from entity list into it
 	 */
 	@Override
 	public void create(List<User> entity) throws SQLException {
 		
 		PreparedStatement psCreate;
-		ResourceBundle rbSalt = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_security");
+		Connection con = null;
 		
-		psCreate = this.connectionImpl.prepareStatement(createPreparedStatement);
-		psCreate.executeUpdate();
-		
-		psCreate = this.connectionImpl.prepareStatement(addPreparedStatement);
-		this.connectionImpl.setAutoCommit(false);
-		for(User u:entity){
-			ExtendedUser eu = (ExtendedUser) u;
-			java.sql.Date date = new java.sql.Date(eu.getDate().getTime());
-			psCreate.setInt(1,eu.getID());
-			psCreate.setString(2,eu.getName());
-			psCreate.setString(3,eu.getLastName());
-			psCreate.setDate(4,date);
-			psCreate.setInt(5,Integer.parseInt(eu.getMobile()));
-			psCreate.setString(6,eu.getAddress());
-			psCreate.setString(7,eu.getLogin());
-			psCreate.setString(8,eu.getPassword());
-			psCreate.setString(9,rbSalt.getString("pswrd_key"));
-			psCreate.setInt(10,eu.getAccessType());
-			
-			psCreate.addBatch();
+		try {
+			con = SQLConnectionsPull.getInstance().getConnection();
+
+			psCreate = con.prepareStatement(createPreparedStatement);
+			psCreate.executeUpdate();
+			psCreate.close();
+		} catch (IOException e) {
+		} catch (PropertyVetoException e) {
 		}
 		
-		psCreate.executeUpdate();
-		this.connectionImpl.setAutoCommit(true);
+		for(User u:entity){
+			this.add(u);
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see by.it_academy.model.dao.AbstractDAO#add(by.it_academy.model.entity4dao.Entity)
+	/**
+	 * public boolean add({@link User})<br\>
+	 * add user into "users" table
+	 * @return true if user has been added, false - another way
 	 */
 	@Override
 	public boolean add(User entity) {
@@ -74,67 +83,175 @@ public class UserDAOImpl extends DAOImplConnection implements UserDAO {
 		ResourceBundle rbSalt = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_security");
 		
 		ExtendedUser eu = (ExtendedUser) entity;
-		System.out.println(eu);
-		System.out.println(eu.getDate().getTime());
+
 		java.sql.Date date = new java.sql.Date(eu.getDate().getTime());
 		
 		try {
-			psCreate = this.connectionImpl.prepareStatement(addPreparedStatement);
+			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(addPreparedStatement);
 		
-			psCreate.setInt(1,eu.getID());
-			psCreate.setString(2,eu.getName());
-			psCreate.setString(3,eu.getLastName());
-			psCreate.setDate(4,date);
-			psCreate.setInt(5,Integer.parseInt(eu.getMobile()));
-			psCreate.setString(6,eu.getAddress());
-			psCreate.setString(7,eu.getLogin());
-			psCreate.setString(8,eu.getPassword());
-			psCreate.setString(9,rbSalt.getString("pswrd_key"));
-			psCreate.setInt(10,eu.getAccessType());
+			psCreate.setInt(1, eu.getID());
+			psCreate.setString(2, eu.getName());
+			psCreate.setString(3, eu.getLastName());
+			psCreate.setDate(4, date);
+			psCreate.setInt(5, Integer.parseInt(eu.getMobile()));
+			psCreate.setString(6, eu.getAddress());
+			psCreate.setString(7, eu.getLogin());
+			psCreate.setString(8, eu.getPassword());
+			psCreate.setString(9, rbSalt.getString("pswrd_key"));
+			psCreate.setInt(10, eu.getAccessType());
 			
-			psCreate.executeUpdate();
-			
+			int res = psCreate.executeUpdate();
+			psCreate.close();
+			return res == 1 ? true : false;
 		} catch (SQLException e) {
-			System.out.println("quary error");
-			e.printStackTrace();
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} catch (PropertyVetoException e) {
+			System.out.println(e);
 		}
-		
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see by.it_academy.model.dao.AbstractDAO#delete(int)
+	/**
+	 * public boolean delete(int)<br\>
+	 * @return true if user by id has been deleted, false - another way
 	 */
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
+
+		PreparedStatement psCreate;
+		
+		try {
+			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(deletePreparedStatement);
+		
+			psCreate.setInt(1,id);
+			psCreate.executeUpdate();
+			psCreate.close();
+			return true;
+		} catch (SQLException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} catch (PropertyVetoException e) {
+			System.out.println(e);
+		}
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see by.it_academy.model.dao.AbstractDAO#getById(int)
+	/**
+	 * public {@link User} getById(int)<br\>
+	 * @return {@link User} equals id or null if {@link User} not found
 	 */
 	@Override
 	public User getById(int id) {
-		// TODO Auto-generated method stub
+		
+		PreparedStatement psCreate;
+		
+		try {
+			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(getByIDPreparedStatement);
+			System.out.println(getByIDPreparedStatement);
+		
+			psCreate.setInt(1,id);
+			ResultSet rsUserById = psCreate.executeQuery();
+			if(rsUserById.next()){
+				String name = rsUserById.getString(1);
+				String lastName = rsUserById.getString(2);
+				Date birthDay = rsUserById.getDate(3);
+				String address = rsUserById.getString(4);
+				String mobile = rsUserById.getString(5);
+				String login = rsUserById.getString(6);
+				
+				psCreate.close();
+				return new User(login.hashCode(), name, lastName, birthDay, address, mobile);
+			} else {
+				psCreate.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} catch (PropertyVetoException e) {
+			System.out.println(e);
+		}
+		
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see by.it_academy.model.dao.AbstractDAO#getAll()
+	/**
+	 * public @{@link List}<{@link User}> getAll()<br\>
+	 * @return list of {@link User} with "student" access
 	 */
 	@Override
 	public List<User> getAll() {
-		// TODO Auto-generated method stub
+		
+		PreparedStatement psCreate;
+		
+		try {
+			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(getAllPreparedStatement);
+		
+			ResultSet rsUserById = psCreate.executeQuery();
+			List<User> userList= new ArrayList<User>();
+			
+			while(rsUserById.next()){
+				String name = rsUserById.getString(1);
+				String lastName = rsUserById.getString(2);
+				Date birthDay = rsUserById.getDate(3);
+				String address = rsUserById.getString(4);
+				String mobile = rsUserById.getString(5);
+				String login = rsUserById.getString(6);
+				
+				userList.add(new User(login.hashCode(), name, lastName, birthDay, address, mobile));
+			}
+			
+			psCreate.close();
+			return userList;
+		} catch (SQLException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} catch (PropertyVetoException e) {
+			System.out.println(e);
+		}
+		
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see by.it_academy.model.dao.UserDAO#getID(java.lang.String, java.lang.String)
+	/**
+	 * public {@link User} getByLoginPassword({@link String}, {@link String})
 	 */
 	@Override
-	public Integer getID(String login, String password) {
-		// TODO Auto-generated method stub
+	public User getByLoginPassword(String login, String password) {
+
+		PreparedStatement psCreate;
+		ResourceBundle rbSalt = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_security");
+		
+		try {
+			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(getUserByLoginPasswordPreparedStatement);
+		
+			psCreate.setString(1, login);
+			psCreate.setString(2, password);
+			psCreate.setString(3, rbSalt.getString("pswrd_key"));
+			ResultSet rsUserById = psCreate.executeQuery();
+			if(rsUserById.next()){
+				
+				ExtendedUser tempExtendedUser = new ExtendedUser(rsUserById.getString(1), rsUserById.getString(2), rsUserById.getDate(3), 
+						rsUserById.getString(4), rsUserById.getString(5), rsUserById.getString(6), null, rsUserById.getInt(7));
+				psCreate.close();
+				return tempExtendedUser;
+			} else {
+				psCreate.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} catch (PropertyVetoException e) {
+			System.out.println(e);
+		}
+		
 		return null;
 	}
 

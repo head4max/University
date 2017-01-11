@@ -24,6 +24,21 @@ public class Certificate extends Entity {
 		this.Marks = new HashMap<String, Integer>();
 	}
 	
+	/**
+	 * public static {@link Certificate} getInstance({@link String})
+	 * @param bundle
+	 * @return
+	 */
+	public static Certificate getInstance(String bundle){
+		String[] strUser= bundle.split(" ");
+		Certificate certificate = new Certificate(Integer.parseInt(strUser[0]));
+
+		for(String strCouple:strUser[1].split(",")){
+			String[] strMark = strCouple.split("-");
+			certificate.addMark(strMark[0], Integer.parseInt(strMark[1]));
+		}
+		return certificate;
+	}
 	
 	/**
 	 * add mark of an object in {@link #Marks}

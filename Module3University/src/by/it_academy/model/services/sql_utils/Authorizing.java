@@ -17,7 +17,7 @@ public abstract class Authorizing {
 		
 		Connection tryConnection = null;
 		try {
-			tryConnection = SQLConnectionsPull.getInstance().getConnection();
+			tryConnection = new SQLConnectionsPull().getInstance().getConnection();
 		} catch (SQLException | IOException | PropertyVetoException e) {
 			e.printStackTrace();
 		}

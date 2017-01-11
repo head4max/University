@@ -4,5 +4,5 @@ import by.it_academy.model.entity4dao.User;
 
 public interface UserDAO extends AbstractDAO<User> {
 	
-	Integer getID(String login, String password);
+	User getByLoginPassword(String login, String password);
 }

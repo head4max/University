@@ -8,9 +8,9 @@ import by.it_academy.model.entity4dao.User;
 public class UserListInit extends AbstractListInit<User>{
 	
 	{
-		this.countUser = 6;
+		this.countUser = 4;
 		this.bundleKey = "user";
-		this.bundlePath = "by.it_academy.model.sql.UsersTableInit";
+		this.bundlePath = "by.it_academy.model.sql.UserTableInit";
 	}
 	
 	public UserListInit(){

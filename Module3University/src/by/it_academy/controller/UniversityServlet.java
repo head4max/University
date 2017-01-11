@@ -32,18 +32,24 @@ public class UniversityServlet extends HttpServlet {
 		
 		UserDAOImpl udaoi = new UserDAOImpl();
 		
-		for(User u:new UserListInit().getList()){
-			udaoi.add(u);
-			System.out.println(u);
-		}
-		
-/*		try {
+		try {
 			
-			new UserDAOImpl().create(new UserListInit().getList());
+			udaoi.create(new UserListInit().getList());
 		} catch (SQLException e) {
 			System.out.println("fail to create");
-			e.printStackTrace();
-		}*/
+		}
+		
+		/*System.out.println("демонстраиця удаления");
+		System.out.println(udaoi.delete(133771986));*/
+		System.out.println("демонстраиця гетид");
+		System.out.println(udaoi.getById(500424833));
+		System.out.println("демонстраиця гетол");
+		for(User u:udaoi.getAll()){
+			System.out.println(u);
+		}
+		System.out.println("демонстраиця гетбайлогинпас");
+		System.out.println(udaoi.getByLoginPassword("head4max@gmail.com", "user1"));
+		System.out.println(udaoi.getByLoginPassword("head4max@gmail.com", "user5"));
 	}
 	
 	

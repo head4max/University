@@ -25,7 +25,7 @@ public class SQLConnectionsPull {
 //		lock.unlock();
 	}
 	
-	private SQLConnectionsPull() throws IOException, SQLException, PropertyVetoException {
+	public SQLConnectionsPull() throws IOException, SQLException, PropertyVetoException {
 
 		ResourceBundle rbSQLConnectionsPull = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_connection");
 		
@@ -63,7 +63,7 @@ public class SQLConnectionsPull {
 		return datasource;
 	}
 
-	public Connection getConnection() throws SQLException {
+	public Connection getConnection() throws SQLException, IOException, PropertyVetoException {
 		return this.cpds.getConnection();
 	}
 }

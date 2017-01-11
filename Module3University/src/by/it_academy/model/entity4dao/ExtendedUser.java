@@ -17,10 +17,10 @@ public class ExtendedUser extends User {
 	 * @param password
 	 * @param accessType
 	 */
-	private ExtendedUser(String name, String lastName, Date birthDay, String address, String mobile, String login,
+	public ExtendedUser(String name, String lastName, Date birthDay, String address, String mobile, String login,
 			String password, int accessType) {
+		
 		super(login.hashCode(), name, lastName, birthDay, address, mobile);
-		System.out.println(birthDay);
 		this.login = login;
 		this.password = password;
 		this.accessType = accessType;
@@ -29,8 +29,6 @@ public class ExtendedUser extends User {
 	public static ExtendedUser getInstance(String name, String lastName, Date birthDay, String address, String mobile, String login,
 			String password, int accessType){
 
-		
-		System.out.println(birthDay);
 		if(name.matches("[A-ZА-ЯЁa-zа-яё]*") && lastName.matches("[A-ZА-ЯЁa-zа-яё]*") && mobile.matches("[0-9]{7}") && login.matches("[A-Za-z0-9]*[@][a-z]*[.][a-z]{2,3}") &&
 				accessType > 0){
 			return new ExtendedUser(name, lastName, birthDay, address, mobile, login, password, accessType);
@@ -41,7 +39,6 @@ public class ExtendedUser extends User {
 	
 	public static ExtendedUser getInstanceFromString(String bundle){
 		String[] strUser= bundle.split(" ");
-		System.out.println("user " + strUser.length);
 		
 		if(strUser.length == 8){
 			return ExtendedUser.getInstance(strUser[0], strUser[1], new java.util.Date(Long.parseLong(strUser[2])), strUser[3], strUser[4], strUser[5], strUser[6], Integer.parseInt(strUser[7]));
