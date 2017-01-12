@@ -10,4 +10,5 @@ public interface CertificateDAO extends AbstractDAO<Certificate> {
 
 	int getFacultySumMark(int id);
 	int getAverageMark(int id);
+	boolean addMark(int id, int objectID, int mark);
 }

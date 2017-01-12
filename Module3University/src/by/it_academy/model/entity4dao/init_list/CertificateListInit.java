@@ -7,7 +7,7 @@ import by.it_academy.model.entity4dao.Certificate;
 public class CertificateListInit extends AbstractListInit<Certificate> {
 
 	{
-		this.countUser = 6;
+		this.countUser = 4;
 		this.bundleKey = "user";
 		this.bundlePath = "by.it_academy.model.sql.CertificateTableInit";
 	}

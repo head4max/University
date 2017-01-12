@@ -1,6 +1,7 @@
 package by.it_academy.model.entity4dao;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * class-expert contains final school marks
@@ -56,5 +57,29 @@ public class Certificate extends Entity {
 	 */
 	public int getMark(String objectName) {
 		return this.Marks.get(objectName);
+	}
+	
+	public int getID(){
+		return this.id;
+	}
+	
+	public HashMap<String, Integer> getMap(){
+		return Marks;
+	}
+	
+	@Override
+	public String toString(){
+		String toString = "";
+		
+		toString += this.getID();
+		toString += " : ";
+		
+		HashMap<String, Integer> hmCertificate = this.getMap();
+		Set<String> keys = hmCertificate.keySet();
+		
+        for (String key: keys) {
+        	toString += "[" + key + "-" + hmCertificate.get(key) + "]";
+        }
+		return toString;
 	}
 }

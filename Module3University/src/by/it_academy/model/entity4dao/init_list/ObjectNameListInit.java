@@ -2,9 +2,9 @@ package by.it_academy.model.entity4dao.init_list;
 
 import java.util.List;
 
-import by.it_academy.model.entity4dao.ObjectName;
+import by.it_academy.model.entity4dao.ObjectNameInfo;
 
-public class ObjectNameListInit extends AbstractListInit<ObjectName> {
+public class ObjectNameListInit extends AbstractListInit<ObjectNameInfo> {
 
 	{
 		this.countUser = 7;
@@ -12,13 +12,17 @@ public class ObjectNameListInit extends AbstractListInit<ObjectName> {
 		this.bundlePath = "by.it_academy.model.sql.ObjectNameTableInit";
 	}
 	
+	public ObjectNameListInit(){
+		ListInit();
+	}
+	
 	@Override
-	public ObjectName getEntity(String strInit) {
-		return new ObjectName(strInit);
+	public ObjectNameInfo getEntity(String strInit) {
+		return new ObjectNameInfo(strInit);
 	}
 
 	@Override
-	public List<ObjectName> getList() {
+	public List<ObjectNameInfo> getList() {
 		return this.entityList;
 	}
 

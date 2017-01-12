@@ -51,9 +51,9 @@ public class UserDAOImpl implements UserDAO {
 	 * create table "users" and add USER from entity list into it
 	 */
 	@Override
-	public void create(List<User> entity) throws SQLException {
+	public void create(List<User> entity){
 		
-		PreparedStatement psCreate;
+		PreparedStatement psCreate = null;
 		Connection con = null;
 		
 		try {
@@ -61,9 +61,22 @@ public class UserDAOImpl implements UserDAO {
 
 			psCreate = con.prepareStatement(createPreparedStatement);
 			psCreate.executeUpdate();
-			psCreate.close();
 		} catch (IOException e) {
 		} catch (PropertyVetoException e) {
+		} catch (SQLException e) {
+		} finally {
+			if(psCreate != null){
+				try {
+					psCreate.close();
+				} catch (SQLException e) {
+				}
+			}
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+				}
+			}
 		}
 		
 		for(User u:entity){
@@ -79,7 +92,9 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public boolean add(User entity) {
 		
-		PreparedStatement psCreate;
+		PreparedStatement psCreate = null;
+		Connection con = null;
+		int res = 0;
 		ResourceBundle rbSalt = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_security");
 		
 		ExtendedUser eu = (ExtendedUser) entity;
@@ -87,7 +102,8 @@ public class UserDAOImpl implements UserDAO {
 		java.sql.Date date = new java.sql.Date(eu.getDate().getTime());
 		
 		try {
-			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(addPreparedStatement);
+			con = SQLConnectionsPull.getInstance().getConnection();
+			psCreate = con.prepareStatement(addPreparedStatement);
 		
 			psCreate.setInt(1, eu.getID());
 			psCreate.setString(2, eu.getName());
@@ -100,17 +116,29 @@ public class UserDAOImpl implements UserDAO {
 			psCreate.setString(9, rbSalt.getString("pswrd_key"));
 			psCreate.setInt(10, eu.getAccessType());
 			
-			int res = psCreate.executeUpdate();
-			psCreate.close();
-			return res == 1 ? true : false;
+			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e);
 		} catch (IOException e) {
 			System.out.println(e);
 		} catch (PropertyVetoException e) {
 			System.out.println(e);
+		} finally {
+			if(psCreate != null){
+				try {
+					psCreate.close();
+				} catch (SQLException e) {
+				}
+			}
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+				}
+			}
 		}
-		return false;
+		
+		return res == 1 ? true : false;
 	}
 
 	/**
@@ -120,23 +148,38 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public boolean delete(int id) {
 
-		PreparedStatement psCreate;
+		PreparedStatement psCreate = null;
+		Connection con = null;
+		int res = 0;
 		
 		try {
-			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(deletePreparedStatement);
+			con = SQLConnectionsPull.getInstance().getConnection();
+			psCreate = con.prepareStatement(deletePreparedStatement);
 		
 			psCreate.setInt(1,id);
-			psCreate.executeUpdate();
-			psCreate.close();
-			return true;
+			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e);
 		} catch (IOException e) {
 			System.out.println(e);
 		} catch (PropertyVetoException e) {
 			System.out.println(e);
+		} finally {
+			if(psCreate != null){
+				try {
+					psCreate.close();
+				} catch (SQLException e) {
+				}
+			}
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+				}
+			}
 		}
-		return false;
+		
+		return  res == 1 ? true : false;
 	}
 
 	/**
@@ -146,11 +189,13 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User getById(int id) {
 		
-		PreparedStatement psCreate;
+		PreparedStatement psCreate = null;
+		Connection con = null;
+		User tempUser = null;
 		
 		try {
-			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(getByIDPreparedStatement);
-			System.out.println(getByIDPreparedStatement);
+			con = SQLConnectionsPull.getInstance().getConnection();
+			psCreate = con.prepareStatement(getByIDPreparedStatement);
 		
 			psCreate.setInt(1,id);
 			ResultSet rsUserById = psCreate.executeQuery();
@@ -162,11 +207,7 @@ public class UserDAOImpl implements UserDAO {
 				String mobile = rsUserById.getString(5);
 				String login = rsUserById.getString(6);
 				
-				psCreate.close();
-				return new User(login.hashCode(), name, lastName, birthDay, address, mobile);
-			} else {
-				psCreate.close();
-				return null;
+				tempUser = new User(login.hashCode(), name, lastName, birthDay, address, mobile);
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -174,9 +215,22 @@ public class UserDAOImpl implements UserDAO {
 			System.out.println(e);
 		} catch (PropertyVetoException e) {
 			System.out.println(e);
+		} finally {
+			if(psCreate != null){
+				try {
+					psCreate.close();
+				} catch (SQLException e) {
+				}
+			}
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+				}
+			}
 		}
 		
-		return null;
+		return tempUser;
 	}
 
 	/**
@@ -186,13 +240,16 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public List<User> getAll() {
 		
-		PreparedStatement psCreate;
+		PreparedStatement psCreate = null;
+		Connection con = null;
+		List<User> userList= new ArrayList<User>();
 		
 		try {
-			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(getAllPreparedStatement);
+			con = SQLConnectionsPull.getInstance().getConnection();
+			psCreate = con.prepareStatement(getAllPreparedStatement);
 		
 			ResultSet rsUserById = psCreate.executeQuery();
-			List<User> userList= new ArrayList<User>();
+			
 			
 			while(rsUserById.next()){
 				String name = rsUserById.getString(1);
@@ -205,17 +262,31 @@ public class UserDAOImpl implements UserDAO {
 				userList.add(new User(login.hashCode(), name, lastName, birthDay, address, mobile));
 			}
 			
-			psCreate.close();
-			return userList;
 		} catch (SQLException e) {
 			System.out.println(e);
 		} catch (IOException e) {
 			System.out.println(e);
 		} catch (PropertyVetoException e) {
 			System.out.println(e);
+		} finally {
+			if(psCreate != null){
+				try {
+					psCreate.close();
+				} catch (SQLException e) {
+				}
+			}
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+				}
+			}
 		}
-		
-		return null;
+		if(userList.size() > 0){
+			return userList;
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -224,25 +295,22 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User getByLoginPassword(String login, String password) {
 
-		PreparedStatement psCreate;
+		PreparedStatement psCreate = null;
+		Connection con = null;
+		ExtendedUser tempExtendedUser = null;
 		ResourceBundle rbSalt = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_security");
 		
 		try {
-			psCreate = SQLConnectionsPull.getInstance().getConnection().prepareStatement(getUserByLoginPasswordPreparedStatement);
+			con = SQLConnectionsPull.getInstance().getConnection();
+			psCreate = con.prepareStatement(getUserByLoginPasswordPreparedStatement);
 		
 			psCreate.setString(1, login);
 			psCreate.setString(2, password);
 			psCreate.setString(3, rbSalt.getString("pswrd_key"));
 			ResultSet rsUserById = psCreate.executeQuery();
 			if(rsUserById.next()){
-				
-				ExtendedUser tempExtendedUser = new ExtendedUser(rsUserById.getString(1), rsUserById.getString(2), rsUserById.getDate(3), 
+				tempExtendedUser = new ExtendedUser(rsUserById.getString(1), rsUserById.getString(2), rsUserById.getDate(3), 
 						rsUserById.getString(4), rsUserById.getString(5), rsUserById.getString(6), null, rsUserById.getInt(7));
-				psCreate.close();
-				return tempExtendedUser;
-			} else {
-				psCreate.close();
-				return null;
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -250,9 +318,22 @@ public class UserDAOImpl implements UserDAO {
 			System.out.println(e);
 		} catch (PropertyVetoException e) {
 			System.out.println(e);
+		} finally {
+			if(psCreate != null){
+				try {
+					psCreate.close();
+				} catch (SQLException e) {
+				}
+			}
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+				}
+			}
 		}
 		
-		return null;
+		return tempExtendedUser;
 	}
 
 }
