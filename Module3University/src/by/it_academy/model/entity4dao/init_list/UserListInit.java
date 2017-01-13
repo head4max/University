@@ -1,7 +1,5 @@
 package by.it_academy.model.entity4dao.init_list;
 
-import java.util.List;
-
 import by.it_academy.model.entity4dao.ExtendedUser;
 import by.it_academy.model.entity4dao.User;
 
@@ -15,12 +13,6 @@ public class UserListInit extends AbstractListInit<User>{
 	
 	public UserListInit(){
 		ListInit();
-	}
-
-	@Override
-	public List<User> getList() {
-
-		return this.entityList;
 	}
 
 	@Override

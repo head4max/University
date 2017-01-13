@@ -14,7 +14,7 @@ public abstract class AbstractListInit<T extends Entity> {
 	
 	protected String bundleKey;
 	protected String bundlePath;
-	protected ResourceBundle rbInitTable;
+	private ResourceBundle rbInitTable;
 	
 	protected int countUser;
 	
@@ -25,11 +25,16 @@ public abstract class AbstractListInit<T extends Entity> {
 		entityList = new LinkedList<T>();
 		
 		for(int i = 1;i <= countUser;i++){
-			this.entityList.add(getEntity(this.rbInitTable.getString(bundleKey + i)));
+			T temp = getEntity(this.rbInitTable.getString(bundleKey + i));
+			if(temp != null){
+				this.entityList.add(temp);
+			}
 		}
 	}
 	
 	public abstract T getEntity(String strInit);
 	
-	public abstract List<T> getList();
+	public List<T> getList() {
+		return this.entityList;
+	}
 }

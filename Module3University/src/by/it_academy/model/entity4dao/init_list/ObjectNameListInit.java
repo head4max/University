@@ -1,7 +1,5 @@
 package by.it_academy.model.entity4dao.init_list;
 
-import java.util.List;
-
 import by.it_academy.model.entity4dao.ObjectNameInfo;
 
 public class ObjectNameListInit extends AbstractListInit<ObjectNameInfo> {
@@ -20,11 +18,5 @@ public class ObjectNameListInit extends AbstractListInit<ObjectNameInfo> {
 	public ObjectNameInfo getEntity(String strInit) {
 		return new ObjectNameInfo(strInit);
 	}
-
-	@Override
-	public List<ObjectNameInfo> getList() {
-		return this.entityList;
-	}
-
 
 }

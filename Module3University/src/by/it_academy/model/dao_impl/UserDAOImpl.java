@@ -18,6 +18,7 @@ import by.it_academy.model.entity4dao.User;
 import by.it_academy.model.services.c3p0.SQLConnectionsPull;
 
 /**
+ * class contain methods for work  with "Users" db 
  * @author head4max
  *
  */
@@ -290,7 +291,8 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	/**
-	 * public {@link User} getByLoginPassword({@link String}, {@link String})
+	 * public {@link User} getByLoginPassword({@link String}, {@link String})<br/>
+	 * @return {@link User} if he's exist with that login&password, null - another way
 	 */
 	@Override
 	public User getByLoginPassword(String login, String password) {

@@ -1,7 +1,5 @@
 package by.it_academy.model.entity4dao.init_list;
 
-import java.util.List;
-
 import by.it_academy.model.entity4dao.Certificate;
 
 public class CertificateListInit extends AbstractListInit<Certificate> {
@@ -19,11 +17,6 @@ public class CertificateListInit extends AbstractListInit<Certificate> {
 	@Override
 	public Certificate getEntity(String strInit) {
 		return Certificate.getInstance(strInit);
-	}
-
-	@Override
-	public List<Certificate> getList() {
-		return this.entityList;
 	}
 
 }

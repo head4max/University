@@ -15,8 +15,10 @@ import java.util.Set;
 import by.it_academy.model.dao.CertificateDAO;
 import by.it_academy.model.entity4dao.Certificate;
 import by.it_academy.model.services.c3p0.SQLConnectionsPull;
+import by.it_academy.model.services.sql_utils.PreparedStatementFromBundle;
 
 /**
+ * class contain methods for work with "Certificates" db 
  * @author head4max
  *
  */
@@ -35,7 +37,7 @@ public class CertificateDAOImpl implements CertificateDAO {
 	static{
 		ResourceBundle rbUserDAOImpl = ResourceBundle.getBundle("by.it_academy.model.sql_properties.sql_prepared_statement");
 		
-		createPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("create"), rbUserDAOImpl.getString("certificateTableName"), rbUserDAOImpl.getString("certificate_table_create"));
+		createPreparedStatement = PreparedStatementFromBundle.getPreparedStatement("create","certificateTableName","certificate_table_create");
 		addPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("add"), rbUserDAOImpl.getString("certificateTableName"), rbUserDAOImpl.getString("certificate_add_values"));
 //		addAllPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("add"), rbUserDAOImpl.getString("usersTableName"), rbUserDAOImpl.getString("users_add_init"));
 		deletePreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("delete"), rbUserDAOImpl.getString("certificateTableName"), rbUserDAOImpl.getString("certificate_delete_where"));
@@ -99,7 +101,6 @@ public class CertificateDAOImpl implements CertificateDAO {
             }
         }
         
-        System.out.println(count);
         return count > 0 ? true : false;
 	}
 	

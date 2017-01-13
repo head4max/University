@@ -1,5 +1,7 @@
 package by.it_academy.model.entity4dao;
 
+import java.util.Arrays;
+
 /**
  * contain an income information about faculty with an appropriate {@link Faculty#id}
  * @author head4max
@@ -12,13 +14,9 @@ public class Faculty extends Entity {
 	 */
 	private String facultyName;
 	/**
-	 * sum of exam marks required for income to {@link #facultyName}
-	 */
-	private int entryMark;
-	/**
 	 * enumeration some IDes appropriate an objects from {@link Certificate} for income to {@link #facultyName} with ";" regex
 	 */
-	private String examObjectsID;
+	private String[] examObjects;
 	
 	/**
 	 * constructor
@@ -27,11 +25,26 @@ public class Faculty extends Entity {
 	 * @param entryMark
 	 * @param takeObjectsID
 	 */
-	public Faculty(int id, String facultyName,int entryMark, String takeObjectsID) {
-		super(id);
+	public Faculty(String facultyName, String...takeObjects) {
+		super(facultyName.hashCode());
 		this.facultyName = facultyName;
-		this.examObjectsID = takeObjectsID;
-		this.entryMark = entryMark;
+		this.examObjects = takeObjects;
+	}
+	
+	public static Faculty getInstance(String bundle){
+		
+		String[] fac = bundle.split(":");
+		if(fac.length != 2){
+			return null;
+		}
+		String facultyName = fac[0];
+		String[] exam = fac[1].split(",");
+		
+		if(exam.length != 3){
+			return null;
+		} else {
+			return new Faculty(facultyName,exam[0],exam[1],exam[2]);
+		}
 	}
 
 	/**
@@ -42,17 +55,27 @@ public class Faculty extends Entity {
 	}
 
 	/**
-	 * @return the {@link Faculty#entryMark}
+	 * @return the {@link Faculty#examObjects}
 	 */
-	public int getEntryMark() {
-		return entryMark;
+	public String getFirstExamObjects() {
+		return examObjects[0];
+	}
+	
+	public String getSecondExamObjects() {
+		return examObjects[1];
+	}
+	
+	public String getThirdExamObjects() {
+		return examObjects[2];
 	}
 
-	/**
-	 * @return the {@link Faculty#examObjectsID}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
-	public String getExamObjectsID() {
-		return examObjectsID;
+	@Override
+	public String toString() {
+		return "Faculty [" + (facultyName != null ? "facultyName=" + facultyName + ", " : "")
+				+ (examObjects != null ? "examObjects=" + Arrays.toString(examObjects) : "") + "]";
 	}
 	
 	

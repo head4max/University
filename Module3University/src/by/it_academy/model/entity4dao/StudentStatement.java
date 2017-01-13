@@ -8,11 +8,12 @@ import java.util.HashMap;
  */
 public class StudentStatement extends Entity {
 	
+	public static enum Request{APPLY,DENY,INPROCCESS};
 	
 	/**
 	 * table of wishful faculties with appropriate boolean type university's design
 	 */
-	private HashMap<String, Boolean> income;
+	private HashMap<String, Request> income;
 	
 	/**
 	 * @param id - student ID whose appropriate {@link StudentStatement#income}
@@ -20,14 +21,14 @@ public class StudentStatement extends Entity {
 	public StudentStatement(int id){
 		super(id);
 		
-		this.income = new HashMap<String, Boolean>();
+		this.income = new HashMap<String, Request>();
 	}
 	
 	/**
 	 * @param facultyName - key of {@link StudentStatement#income} table
 	 * @param hasInvited - value of {@link StudentStatement#income} table
 	 */
-	public void addFaculty(String facultyName, boolean hasInvited) {
+	public void addFaculty(String facultyName, Request hasInvited) {
 		this.income.put(facultyName, hasInvited);
 	}
 	
@@ -36,7 +37,15 @@ public class StudentStatement extends Entity {
 	 * @param facultyName - key of {@link StudentStatement#income} table
 	 * @return value of {@link StudentStatement#income} table
 	 */
-	public boolean getDesign(String facultyName) {
+	public Request getDesign(String facultyName) {
 		return this.income.get(facultyName);
+	}
+	
+	public HashMap<String, Request> getMap(){
+		return this.income;
+	}
+	
+	public int getID(){
+		return this.id;
 	}
 }

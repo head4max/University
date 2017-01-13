@@ -16,6 +16,11 @@ import java.util.ResourceBundle;
 
 import by.it_academy.model.dao.ObjectNameDAO;
 
+/**
+ * class contain methods for work  with "Objects" db 
+ * @author head4max
+ *
+ */
 public class ObjectNameDAOImpl implements ObjectNameDAO{
 
 	protected static String addPreparedStatement;
@@ -35,6 +40,10 @@ public class ObjectNameDAOImpl implements ObjectNameDAO{
 		getByIDPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("getByID"), rbUserDAOImpl.getString("objectName_getByID"), rbUserDAOImpl.getString("objectNameTableName"), rbUserDAOImpl.getString("objectName_getByID_where"));
 		getAllPreparedStatement = MessageFormat.format(rbUserDAOImpl.getString("getAll"), rbUserDAOImpl.getString("objectName_getAll_select"), rbUserDAOImpl.getString("objectNameTableName"), "");
 	}
+	
+	/**
+	 * create "objects" table and add object from list
+	 */
 	@Override
 	public void create(List<ObjectNameInfo> entity) {
 		
@@ -70,6 +79,10 @@ public class ObjectNameDAOImpl implements ObjectNameDAO{
 		
 	}
 
+	/**
+	 * public boolean add({@link ObjectNameInfo})<br/>
+	 * @return true if add successful
+	 */
 	@Override
 	public boolean add(ObjectNameInfo entity) {
 		
@@ -109,6 +122,10 @@ public class ObjectNameDAOImpl implements ObjectNameDAO{
 		return res == 1 ? true : false;
 	}
 
+	/**
+	 * public boolean delete(int)<br/>
+	 * @return true if delete was successful
+	 */
 	@Override
 	public boolean delete(int string) {
 		
@@ -143,6 +160,11 @@ public class ObjectNameDAOImpl implements ObjectNameDAO{
 		return  res == 1 ? true : false;
 	}
 
+	/**
+	 * public {@link ObjectNameInfo} getById(int id)<br/>
+	 * get name of the object by id
+	 * @return {@link ObjectNameInfo}
+	 */
 	@Override
 	public ObjectNameInfo getById(int id) {
 		
@@ -181,6 +203,11 @@ public class ObjectNameDAOImpl implements ObjectNameDAO{
 		return oni;
 	}
 
+	/**
+	 * public List<ObjectNameInfo> getAll()
+	 * get list of th couple name and id of the object
+	 * @return List<ObjectNameInfo>
+	 */
 	@Override
 	public List<ObjectNameInfo> getAll() {
 		
@@ -227,6 +254,11 @@ public class ObjectNameDAOImpl implements ObjectNameDAO{
 		}
 	}
 
+	/**
+	 * public boolean deleteByName(String)
+	 * delete object by name
+	 * @return true if delete was successful
+	 */
 	@Override
 	public boolean deleteByName(String object) {
 

@@ -2,6 +2,11 @@ package by.it_academy.model.entity4dao;
 
 import java.util.Date;
 
+/**
+ * class-expert extended User class login,password ant access type field
+ * @author head4max
+ *
+ */
 public class ExtendedUser extends User {
 	
 	private String login;
