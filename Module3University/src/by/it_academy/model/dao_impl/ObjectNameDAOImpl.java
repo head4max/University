@@ -99,11 +99,8 @@ public class ObjectNameDAOImpl implements ObjectNameDAO{
 			
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -227,11 +224,8 @@ public class ObjectNameDAOImpl implements ObjectNameDAO{
 				userList.add(new ObjectNameInfo(name));
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {

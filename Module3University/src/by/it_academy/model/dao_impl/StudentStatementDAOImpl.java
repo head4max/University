@@ -50,7 +50,6 @@ public class StudentStatementDAOImpl implements StudentStatementDAO {
 		try {
 			con = SQLConnectionsPull.getInstance().getConnection();
 			psCreate = con.prepareStatement(createPreparedStatement);
-			System.out.println(createPreparedStatement);
 
 			psCreate.executeUpdate();
 		} catch (IOException e) {
@@ -121,11 +120,8 @@ public class StudentStatementDAOImpl implements StudentStatementDAO {
 			
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -158,11 +154,8 @@ public class StudentStatementDAOImpl implements StudentStatementDAO {
 			psCreate.setInt(1,id);
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -182,13 +175,11 @@ public class StudentStatementDAOImpl implements StudentStatementDAO {
 
 	@Override
 	public StudentStatement getById(int id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<StudentStatement> getAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

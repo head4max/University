@@ -23,7 +23,7 @@
 			<td><input name="password" value="" size="20" type="text" /></td>
 		</tr>
 	</table>
-	<form action="/university" method="get">
+	<form action="university" method="get">
         <input type="submit" value="log in" />
     </form>
 </body>

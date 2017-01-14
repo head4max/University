@@ -1,11 +1,10 @@
 package by.it_academy.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,9 +17,7 @@ import by.it_academy.model.dao_impl.FacultiesDAOImpl;
 import by.it_academy.model.dao_impl.ObjectNameDAOImpl;
 import by.it_academy.model.dao_impl.StudentStatementDAOImpl;
 import by.it_academy.model.dao_impl.UserDAOImpl;
-import by.it_academy.model.entity4dao.Certificate;
-import by.it_academy.model.entity4dao.Faculty;
-import by.it_academy.model.entity4dao.ObjectNameInfo;
+import by.it_academy.model.entity4dao.ExtendedUser;
 import by.it_academy.model.entity4dao.StudentStatement;
 import by.it_academy.model.entity4dao.User;
 import by.it_academy.model.entity4dao.init_list.CertificateListInit;
@@ -32,7 +29,7 @@ import by.it_academy.model.entity4dao.init_list.UserListInit;
  * @author head4max
  *
  */
-@WebServlet("/University")
+@WebServlet("/university")
 public class UniversityServlet extends HttpServlet {
 
 	/**
@@ -48,12 +45,6 @@ public class UniversityServlet extends HttpServlet {
 		CertificateDAOImpl cdaoi = new CertificateDAOImpl();
 		FacultiesDAOImpl fdaoi = new FacultiesDAOImpl();
 		StudentStatementDAOImpl ssdaoi =  new StudentStatementDAOImpl();
-		
-		System.out.println(new FacultyListInit().getList());
-		for(Faculty u:new FacultyListInit().getList()){
-			System.out.println(u);
-		}
-		
 
 		udaoi.create(new UserListInit().getList());
 		ondaoi.create(new ObjectNameListInit().getList());
@@ -66,8 +57,45 @@ public class UniversityServlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		
+		response.setContentType("text/html");
+		String uri = request.getRequestURI();
+		HttpSession session = request.getSession(false);
 		
-		System.out.println("dfsfsf");
+		System.out.println("servlet end with Logon " + uri.endsWith("LogOn.jspx"));
+		System.out.println("servlet end with Module3 " + uri.endsWith("Module3University/"));
+		System.out.println("servlet sesion " + session);
+		if ( session == null) {
+			System.out.println("session=null");
+
+			System.out.println("req param " + request.getParameterMap());
+			System.out.println("req param " + request.getParameter("login"));
+//			System.out.println( request.getParameter("login"));
+			String loginUser = (String) request.getAttribute("login");
+//			System.out.println(loginUser);
+			String passwordUser = (String) request.getAttribute("password");
+//			System.out.println(passwordUser);
+			ExtendedUser eu = null;
+			if(loginUser != null && passwordUser!= null){
+				eu = (ExtendedUser) new UserDAOImpl().getByLoginPassword(loginUser, passwordUser);
+			}
+			if (eu != null) {
+				session = request.getSession();
+				System.out.println("fantomas");
+				request.setAttribute("user", (User) eu);
+				switch (eu.getAccessType()) {
+				case 1:
+					response.sendRedirect("StudentUniversity.jspx");
+					break;
+				case 2:
+					response.sendRedirect("University.jspx");
+					break;
+				default:
+					response.sendRedirect("InspectorUniversity.jspx");
+				}
+			}
+		}
+		
+//		System.out.println("dfsfsf");
 		/*System.out.println("демонстраиця гетид");
 		System.out.println(fdaoi.getById(-164354418));
 		System.out.println("демонстраиця удаления");

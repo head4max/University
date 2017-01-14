@@ -121,11 +121,8 @@ public class CertificateDAOImpl implements CertificateDAO {
 			
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -161,11 +158,8 @@ public class CertificateDAOImpl implements CertificateDAO {
 			psCreate.setInt(1,id);
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -208,11 +202,8 @@ public class CertificateDAOImpl implements CertificateDAO {
 				certif.addMark(objectName, mark);
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -258,11 +249,8 @@ public class CertificateDAOImpl implements CertificateDAO {
 			ResultSet rsSumMark = psCreate.executeQuery();
 			mark = rsSumMark.getInt(1);
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {

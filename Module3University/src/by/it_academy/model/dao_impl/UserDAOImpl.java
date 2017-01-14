@@ -119,11 +119,8 @@ public class UserDAOImpl implements UserDAO {
 			
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -160,11 +157,8 @@ public class UserDAOImpl implements UserDAO {
 			psCreate.setInt(1,id);
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -211,11 +205,8 @@ public class UserDAOImpl implements UserDAO {
 				tempUser = new User(login.hashCode(), name, lastName, birthDay, address, mobile);
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -264,11 +255,8 @@ public class UserDAOImpl implements UserDAO {
 			}
 			
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -315,11 +303,8 @@ public class UserDAOImpl implements UserDAO {
 						rsUserById.getString(4), rsUserById.getString(5), rsUserById.getString(6), null, rsUserById.getInt(7));
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {

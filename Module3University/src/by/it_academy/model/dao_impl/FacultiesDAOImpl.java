@@ -15,7 +15,7 @@ import by.it_academy.model.services.c3p0.SQLConnectionsPull;
 import by.it_academy.model.services.sql_utils.PreparedStatementFromBundle;
 
 /**
- * class contain methods for work  with "Faculties" db 
+ * class contain methods for work  with "Faculties" table 
  * @author head4max
  *
  */
@@ -83,7 +83,6 @@ public class FacultiesDAOImpl implements FacultiesDAO {
 		try {
 			con = SQLConnectionsPull.getInstance().getConnection();
 			psCreate = con.prepareStatement(addPreparedStatement);
-			System.out.println(addPreparedStatement);
 			
 			psCreate.setInt(1, entity.getFacultyName().hashCode());
 			psCreate.setString(2, entity.getFacultyName());
@@ -93,11 +92,8 @@ public class FacultiesDAOImpl implements FacultiesDAO {
 			
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -130,11 +126,8 @@ public class FacultiesDAOImpl implements FacultiesDAO {
 			psCreate.setInt(1,id);
 			res = psCreate.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {
@@ -193,6 +186,9 @@ public class FacultiesDAOImpl implements FacultiesDAO {
 		return fac;
 	}
 
+	/**
+	 * get list of faculties
+	 */
 	@Override
 	public List<Faculty> getAll() {
 		
@@ -219,11 +215,8 @@ public class FacultiesDAOImpl implements FacultiesDAO {
 				
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
 		} catch (PropertyVetoException e) {
-			System.out.println(e);
 		} finally {
 			if(psCreate != null){
 				try {

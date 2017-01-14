@@ -13,15 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import by.it_academy.model.dao_impl.UserDAOImpl;
-import by.it_academy.model.entity4dao.ExtendedUser;
-import by.it_academy.model.entity4dao.User;
-
 /**
  * authorisation filter
  * @author head4max
  *
  */
+
+
 public class AuthenticationFilter implements Filter {
 
 	@Override
@@ -35,32 +33,13 @@ public class AuthenticationFilter implements Filter {
 		String uri = req.getRequestURI();
 		HttpSession session = req.getSession(false);
 
-		System.out.println("end with " + uri.endsWith("LogOn.jspx"));
-		System.out.println("sesion " + session);
-		if(session == null) {
-			if ((uri.endsWith("LogOn.jspx"))) {
-
-				ExtendedUser eu = (ExtendedUser) new UserDAOImpl().getByLoginPassword(
-						req.getAttribute("login").toString(), req.getAttribute("password").toString());
-				if (eu != null) {
-					session = req.getSession();
-					req.setAttribute("user", (User) eu);
-					switch (eu.getAccessType()) {
-					case 1:
-						res.sendRedirect("StudentUniversity.jspx");
-						break;
-					case 2:
-						res.sendRedirect("University.jspx");
-						break;
-					default:
-						res.sendRedirect("InspectorUniversity.jspx");
-					}
-				} else {
-					res.sendRedirect("LogOn.jspx");
-				}
-			}
+		/*System.out.println("end with Logon " + uri.endsWith("LogOn.jspx"));
+		System.out.println("end with Module3 " + uri.endsWith("Module3University/"));
+		System.out.println("sesion " + session);*/
+		if(session == null && !(uri.endsWith("LogOn.jspx") || uri.endsWith("Module3University/"))) {
+			System.out.println("redirect to start page");
+			res.sendRedirect("LogOn.jspx");
 		}
-		
 		fc.doFilter(request, response);
 	}
 
